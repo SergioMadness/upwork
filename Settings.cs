@@ -1,6 +1,6 @@
 ﻿using WPDevelopmentLibs.Helpers;
 
-namespace DataLayer.UpWork
+namespace UpworkWP8
 {
     public class Settings
     {

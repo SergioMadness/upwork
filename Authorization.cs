@@ -3,8 +3,9 @@ using WPDevelopmentLibs.Helpers;
 using DataLayer.Libs.Helpers.Net;
 using System.Net;
 using System.Collections.Generic;
+using UpworkWP8.interfaces;
 
-namespace DataLayer.UpWork
+namespace UpworkWP8
 {
     public class Authorization : Service
     {
@@ -20,12 +21,12 @@ namespace DataLayer.UpWork
             string timestamp = DateHelpers.DateTimeToUnitTimeStamp(DateTime.UtcNow).ToString();
 
             SimpleConnector connector = new SimpleConnector();
-            connector.SetServerName(Constants.Urls.TOKEN_REQUEST);
+            connector.SetServerName(Constants.Urls.URL_TOKEN_REQUEST);
             connector.AddParam("oauth_consumer_key", Settings.Key);
             connector.AddParam("oauth_nonce", Settings.Nounce);
             connector.AddParam("oauth_timestamp", timestamp);
             connector.AddParam("oauth_signature_method", Settings.SignatireMethod);
-            connector.AddParam("oauth_signature", this.generateSignature(this.CurrentSignatureType, "POST", Constants.Urls.TOKEN_REQUEST, connector.GetParams(), Settings.SecretKey + "&"));
+            connector.AddParam("oauth_signature", this.generateSignature(this.CurrentSignatureType, "POST", Constants.Urls.URL_TOKEN_REQUEST, connector.GetParams(), Settings.SecretKey + "&"));
 
             connector.OnRequestComplete += this.parseResponse;
             connector.OnRequestComplete += this.onRequestComplete;
@@ -38,14 +39,14 @@ namespace DataLayer.UpWork
             string timestamp = DateHelpers.DateTimeToUnitTimeStamp(DateTime.UtcNow).ToString();
 
             SimpleConnector connector = new SimpleConnector();
-            connector.SetServerName(Constants.Urls.TOKEN_ACCESS);
+            connector.SetServerName(Constants.Urls.URL_TOKEN_ACCESS);
             connector.AddParam("oauth_token", this.OAuthToken);
             connector.AddParam("oauth_consumer_key", Settings.Key);
             connector.AddParam("oauth_nonce", Settings.Nounce);
             connector.AddParam("oauth_timestamp", timestamp);
             connector.AddParam("oauth_verifier", verifier);
             connector.AddParam("oauth_signature_method", Settings.SignatireMethod);
-            connector.AddParam("oauth_signature", this.generateSignature(this.CurrentSignatureType, "POST", Constants.Urls.TOKEN_ACCESS, connector.GetParams(), Settings.SecretKey + "&" + this.OAuthTokenSecret));
+            connector.AddParam("oauth_signature", this.generateSignature(this.CurrentSignatureType, "POST", Constants.Urls.URL_TOKEN_ACCESS, connector.GetParams(), Settings.SecretKey + "&" + this.OAuthTokenSecret));
             connector.OnRequestComplete += parseAccessToken;
             connector.OnRequestComplete += this.onRequestComplete;
             connector.SendPost();

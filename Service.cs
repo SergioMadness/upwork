@@ -1,10 +1,12 @@
-﻿namespace DataLayer.UpWork
+﻿namespace UpworkWP8
 {
     public delegate void ServiceListener(Service state, string e);
 
-    public class Service
+    public abstract class Service : DataLayer.UpWork.interfaces.Service
     {
         public ServiceListener OnDataIsLoaded;
+
+        public abstract object execute();
 
         protected void onRequestComplete(string response)
         {
